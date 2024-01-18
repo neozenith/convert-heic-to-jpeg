@@ -1,0 +1,5 @@
+**/*.heic
+**/*.jpeg
+**/*.png
+.venv
+.DS_Store
