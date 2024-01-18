@@ -17,3 +17,10 @@ python3 -m venv .venv
 ```sh
 .venv/bin/python3 convert.py
 ```
+
+# TODO
+ - Read write files in S3
+ - Migrate conversion code to AWS SAM Lambda
+ - Add Textract Lambda
+ - Add SQS queues
+ - Add Lambda for retrieving results

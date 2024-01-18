@@ -1,6 +1,7 @@
 import os
 import sys
 from pathlib import Path
+import boto3
 
 def discover_heic(start_dir: Path = Path("./data/HEIC/")):
     """Recursively walk and discover a list of HEIC files to process."""
