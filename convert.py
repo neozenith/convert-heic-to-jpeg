@@ -3,12 +3,12 @@ import sys
 from pathlib import Path
 import boto3
 
-def discover_heic(start_dir: Path = Path("./data/HEIC/")):
+def discover_heic(start_dir: Path = Path("./data/")):
     """Recursively walk and discover a list of HEIC files to process."""
     return [ start_dir /f for f in os.listdir(start_dir) if f.lower().endswith(".heic")]
 
 def targeter(p: Path, suffix: str = "JPEG"):
-    return (p.parent.parent / suffix / p.name).with_suffix(f".{suffix}")
+    return (p.parent / suffix / p.name).with_suffix(f".{suffix}")
 
 def process_image(img_path: Path, type: str = "PNG"):
     """Given the path to a HEIC, convert it to a PNG."""
