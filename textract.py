@@ -73,6 +73,12 @@ async def main(args):
     results = await asyncio.gather(*[process_document(f) for f in files])
     print(results)
 
+    #TODO: extract key values out:
+    # ODO meter
+    # Number of litres
+    # Total price of fuel
+    # Transaction date
+
 
 
 
