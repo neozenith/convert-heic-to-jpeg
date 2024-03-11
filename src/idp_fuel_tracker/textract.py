@@ -13,9 +13,10 @@ import asyncio
 load_dotenv()
 
 local_dir = Path("./data/")
-os.makedirs(local_dir, exist_ok=True)
-print(os.environ["AWS_PROFILE"])
-print(os.environ["AWS_REGION"])
+
+
+
+
 session = boto3.session.Session(profile_name=os.environ["AWS_PROFILE"], region_name=os.environ["AWS_REGION"])
 s3_client = session.client('s3')
 textract_client = session.client("textract")
@@ -50,6 +51,8 @@ def filename_filter(f):
     return any(f.name.lower().endswith(x) for x in ["jpg", "jpeg"])
 
 async def list_files():
+    os.makedirs(local_dir, exist_ok=True)
+    os.makedirs(local_dir / "JPEG", exist_ok=True)
     return [f for f in Path("./data/JPEG/").iterdir() if filename_filter(f)]
 
 async def process_document(f, overwrite=False):

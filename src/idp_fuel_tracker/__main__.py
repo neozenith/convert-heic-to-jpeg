@@ -9,7 +9,8 @@ load_dotenv()
 
 async def main(args):
     print("Syncing...")
-
+    sync()
+    
     print("Converting...")
     convert_heic()
 
@@ -23,6 +24,12 @@ async def main(args):
     # Transaction date
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main(sys.argv))
-    loop.close()
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    try:
+        loop.run_until_complete(main(sys.argv))
+        loop.close()
+    except KeyboardInterrupt:
+        pass
+    
+    
