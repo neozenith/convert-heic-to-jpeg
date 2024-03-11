@@ -6,3 +6,6 @@
 **/.aws-sam
 .env
 data/
+**/__pycache__
+**/*.egg-info
+requirements*.txt

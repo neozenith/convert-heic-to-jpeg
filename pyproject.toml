@@ -1,0 +1,12 @@
+[project]
+name = "idp-fuel-tracker"
+description = ""
+version = "0.1.0"
+authors = []
+
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

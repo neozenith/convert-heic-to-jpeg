@@ -25,7 +25,8 @@ comprehend_client = session.client("comprehend")
 # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/textract/client/analyze_document.html
 # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/textract/client/analyze_expense.html
 # https://docs.aws.amazon.com/textract/latest/dg/what-is.html
-
+# https://dev.to/jbahire/text-extraction-made-easy-with-amazon-textract-12p
+#
 # {
 #    "Document": { 
 #       "Bytes": blob,
@@ -67,7 +68,7 @@ async def process_document(f, overwrite=False):
         print(f"Skipping because {overwrite=} or {outputfilename.exists()=}")
     return outputfilename
 
-async def main(args):
+async def process_documents():
     files: List[Path] = await list_files()
     print(files)
     results = await asyncio.gather(*[process_document(f) for f in files])
@@ -78,11 +79,3 @@ async def main(args):
     # Number of litres
     # Total price of fuel
     # Transaction date
-
-
-
-
-if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main(sys.argv))
-    loop.close()
