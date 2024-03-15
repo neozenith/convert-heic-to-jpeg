@@ -1,3 +1,3 @@
-from .sync import sync
-from .convert import convert_heic
+from .image_utils import convert_heic
 from .textract import process_documents
+from .s3 import sync_files

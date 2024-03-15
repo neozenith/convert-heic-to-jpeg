@@ -3,19 +3,19 @@ from dotenv import load_dotenv
 import asyncio
 
 
-from idp_fuel_tracker import sync, convert_heic, process_documents
+from idp_fuel_tracker import sync_files, convert_heic, process_documents
 
 load_dotenv()
 
 async def main(args):
     print("Syncing...")
-    sync()
+    sync_files()
     
     print("Converting...")
     convert_heic()
 
     print("Processing...")
-    await process_documents()
+    await process_documents(overwrite=False)
 
     #TODO: extract key values out:
     # ODO meter
@@ -24,11 +24,9 @@ async def main(args):
     # Transaction date
 
 if __name__ == "__main__":
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
+    
     try:
-        loop.run_until_complete(main(sys.argv))
-        loop.close()
+        asyncio.run(main(sys.argv))
     except KeyboardInterrupt:
         pass
     

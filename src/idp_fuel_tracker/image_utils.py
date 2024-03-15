@@ -1,5 +1,8 @@
 import os
 from pathlib import Path
+from pprint import pprint as pp
+
+
 
 def discover_heic(start_dir: Path = Path("./data/")):
     """Recursively walk and discover a list of HEIC files to process."""
@@ -20,12 +23,10 @@ def process_image(img_path: Path, type: str = "PNG"):
     return target_path
 
 
-def convert_heic(target_type="JPEG"):
+def convert_heic(target_type="JPEG", start_dir: Path = Path("./data/")):
     """Process HEIC images to PNG/JPG."""
-    for f in discover_heic():
+    for f in discover_heic(start_dir):
         print(f"Processing {f} --> ")
         print(process_image(f, target_type))
     
 
-if __name__ == "__main__":
-    convert_heic()
