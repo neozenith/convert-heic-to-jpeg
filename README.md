@@ -48,18 +48,14 @@ With this information I can deduce:
 
 ```sh
 rm -rfv .venv
-python3 -m venv .venv
-.venv/bin/python3 -m pip install -U pip pip-tools
+make init 
+make lock 
+make dev 
+make fix
 
-# PROD
-.venv/bin/python3 -m piptools compile --generate-hashes requirements.in --output-file requirements.txt
-.venv/bin/python3 -m pip install -r requirements.txt --require-hashes --no-deps --only-binary :all:
+#OR
 
-# DEV
-.venv/bin/python3 -m piptools compile requirements-dev.in --output-file requirements-dev.txt
-.venv/bin/python3 -m pip install -r requirements-dev.txt --no-deps
-
-.venv/bin/python3 -m idp_fuel_tracker
+make all
 ```
 
 ### Run
@@ -67,10 +63,14 @@ python3 -m venv .venv
 
 ```sh
 .venv/bin/python3 -m idp_fuel_tracker
+# OR 
+make run
 ```
 
 
 # TODO
+ - group pairs of images by "Content Created Date" metadata
+  - https://stackoverflow.com/questions/23064549/get-date-and-time-when-photo-was-taken-from-exif-data-using-pil
  - Process results of textract 
     - Get metadata about files
     - get transaction date

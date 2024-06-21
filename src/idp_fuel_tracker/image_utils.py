@@ -1,32 +1,51 @@
 import os
 from pathlib import Path
-from pprint import pprint as pp
+
+from PIL import Image
+from pillow_heif import register_heif_opener
+
+register_heif_opener()
 
 
-
-def discover_heic(start_dir: Path = Path("./data/")):
+def discover(start_dir: Path = Path("./data/")):
     """Recursively walk and discover a list of HEIC files to process."""
-    return [ start_dir /f for f in os.listdir(start_dir) if f.lower().endswith(".heic")]
+    return [
+        start_dir / f
+        for f in os.listdir(start_dir)
+        if f.lower().endswith(".heic") or f.lower().endswith(".jpeg")
+    ]
 
-def targeter(p: Path, suffix: str = "JPEG"):
-    return (p.parent / suffix / p.name).with_suffix(f".{suffix}")
 
-def process_image(img_path: Path, type: str = "PNG"):
-    """Given the path to a HEIC, convert it to a PNG."""
-    from PIL import Image
-    from pillow_heif import register_heif_opener
-
-    register_heif_opener()
-    target_path = targeter(img_path, type)
+def process_image(img_path: Path, type: str = "JPEG"):
+    """Given the path to a HEIC/JPEG, convert it to target type in target location."""
     image = Image.open(img_path)
-    image.save(target_path,type)
+
+    # try to get the original created date out of the EXIF data embedded in the image
+    # do not trust the operating system metadata about dates.
+    exif_data = image.getexif()
+
+    if exif_data is not None:
+        tag = 306  # DateTime
+        exif_date = exif_data.get(tag)
+        # Format of data is "YYYY:MM:DD HH:MM:SS"
+        # So split on space and get the first part
+        # replace : to make the string folder path friendly
+        date_component = exif_date.split(" ")[0].replace(":", "-")
+        target_path = (
+            img_path.parent / "triaged" / date_component / img_path.name
+        ).with_suffix(f".{type.lower()}")
+    else:
+        target_path = (img_path.parent / "triaged" / img_path.name).with_suffix(
+            f".{type.lower()}"
+        )
+
+    if not target_path.exists():
+        os.makedirs(target_path.parent, exist_ok=True)
+        image.save(target_path, type)
+
     return target_path
 
 
-def convert_heic(target_type="JPEG", start_dir: Path = Path("./data/")):
-    """Process HEIC images to PNG/JPG."""
-    for f in discover_heic(start_dir):
-        print(f"Processing {f} --> ")
-        print(process_image(f, target_type))
-    
-
+def convert(start_dir: Path = Path("./data/")):
+    """Process HEIC/JPEG images to JPEG."""
+    return [process_image(f, "JPEG") for f in discover(start_dir)]
